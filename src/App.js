@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import * as firebase from 'firebase';
 import RoomList from './components/RoomList'
+import MessageList from './components/MessageList'
 
 var config = {
   apiKey: "AIzaSyBF_RAfpht8lUBEFHBz5mCHQFcwQAnkO8s",
@@ -18,12 +19,14 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-        <RoomList firebase={firebase}
-
-        />
+        
           <h1 className="Room-List">Welcome to Bloc Chat!</h1>
 
         </header>
+
+        <RoomList firebase={firebase} activeRoom={this.activeRoom} setRoom={this.setRoom} />
+        <MessageList activeRoom={this.activeRoom} firebase={firebase} />
+
       </div>
     );
   }

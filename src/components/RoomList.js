@@ -9,7 +9,6 @@ class RoomList extends Component {
 			rooms: [],
 			newRoomsName: '',
       value: ''
-
 	};
 
 		this.roomsRef = this.props.firebase.database().ref('rooms');
@@ -57,17 +56,12 @@ render(){
                             <input type="text" value={this.state.value} onChange={(e) => this.handleChange(e)} />
                     </label>
                 
-                    
                     <input type="submit" value="Submit" /> 
 
-        </form>
-         </section>
-
-
-
+            </form>
+      </section>
 	);
 }
-
 
 }
 
