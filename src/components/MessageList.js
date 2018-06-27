@@ -7,30 +7,30 @@ class MessageList extends Component {
     this.state = {
       username: '',
       messages: [],
-      message: ''
+      message: '',
+      roomId: ''
   }
 
     this.handleChange = this.handleChange.bind(this);
-
     this.messagesRef = this.props.firebase.database().ref('messages');
 
   }
 
    handleChange(e) {
+    e.preventDefault();
      this.setState({message: e.target.value});
    }
 
    handleSubmit(e) {
      e.preventDefault();
-     if (this.state.message)
+     if (this.props.firebase)
      {
-console.log(this.props.activeRoom)
 
        this.messagesRef.push({
        username: this.state.username,
        content: this.state.message,
-       sentAt: Date.now(),
-       roomId: 'test',
+       sentAt: new Date().toISOString().slice(0,10),
+       roomId: this.props.activeRoom.key,
        })
        this.setState({message: ''});
      }
@@ -41,13 +41,21 @@ console.log(this.props.activeRoom)
         const messages = snapshot.val();
         this.setState({ messages: this.state.messages.concat( messages ) });
            });
+        console.log('Active room: ', this.props.activeRoom.roomId);
    }
+
+   componentWillReceiveProps(nextProps){
+     let filteredMessages = this.state.messages.filter(message => nextProps.activeRoom.roomId === message.roomId);
+     this.setState({filteredMessages: filteredMessages});
+     console.log(this.state.filteredMessages)
+      };
 
   render() {
     return (
       <div className = 'messages'>
+      <h1>{this.props.activeRoom.name}</h1>
       <input type="text" value={this.state.message} onChange={this.handleChange.bind(this)} />
-      <form onSubmit={ (e) => this.handleSubmit(e) }>
+      <form onSubmit={ (e) => this.handleSubmit.bind(this) }>
       <button type="submit">Submit</button>
       <label>
         Messages:
@@ -56,12 +64,11 @@ console.log(this.props.activeRoom)
         </form>
         <ul>
           {
-             this.state.messages.map((message, i) => {
-               return (
-                <li key={i} >
-                  {message.content} : {message.roomId} : {message.username} : {message.sentAt}
-
-                </li>
+             this.state.messages.filter(message => this.props.activeRoom.key === message.roomId).map((message, i) => {
+              return (
+               <li key={i} >
+                 {message.content} : {message.username} : {message.sentAt}
+              </li>
            )
         })
     }
