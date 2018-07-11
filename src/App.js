@@ -3,6 +3,7 @@ import './App.css';
 import * as firebase from 'firebase';
 import RoomList from './components/RoomList'
 import MessageList from './components/MessageList'
+import User from './components/User';
 
 var config = {
   apiKey: "AIzaSyBF_RAfpht8lUBEFHBz5mCHQFcwQAnkO8s",
@@ -23,16 +24,28 @@ constructor(props) {
   message: [],
   roomId: [],
   activeRoom: '',
-  
+  user: ''
   }
+
  
   this.setRoom = this.setRoom.bind(this); // hard binding, I don't care where this is called. I want the value of 'this' to be 'this'
+  this.setUser = this.setUser.bind(this);
 }
 
   setRoom(room){
     this.setState({activeRoom: room});
     console.log(this.state.activeRoom.key)
   }
+
+    setUser(user){
+    console.log("setUser was called.");
+    this.setState({ user : user})
+    if (user) {
+       console.log("set user to " + user.displayName);
+     } else {
+       console.log("null user was provided.");
+     }
+}
 
 
   render() {
@@ -44,6 +57,7 @@ constructor(props) {
 
         <RoomList firebase={firebase} activeRoom={this.state.activeRoom} setRoom={this.setRoom} />
         <MessageList activeRoom={this.state.activeRoom} firebase={firebase} />
+        <User firebase={firebase} activeRoom={this.state.activeRoom} setUser={this.setUser} user={this.state.user} />
       </div>
     );
   }
