@@ -10,7 +10,7 @@ class RoomList extends Component {
 			newRoomsName: '',
       value: ''
 	};
-
+    this.handleChange = this.handleChange.bind(this);
 		this.roomsRef = this.props.firebase.database().ref('rooms');
 
 };
@@ -24,14 +24,22 @@ class RoomList extends Component {
    }
 
 
-   handleChange(event) {
-        this.setState({value: event.target.value}); 
+   handleChange(e) {
+       e.preventDefault();
+       this.setState({
+       newRoomsName: e.target.value
+     }); 
     }
 
-    handleSubmit(event) {
-    	event.preventDefault();
-    	this.createRoom(this.state.value);
-    	this.setState({value: ""});
+    handleSubmit(e) {
+    	e.preventDefault();
+     if (this.state.newRoomsName)
+     {
+       this.setState({newRoomsName: ''});
+       this.roomsRef.push({
+       name: this.state.newRoomsName,
+       })
+     }
     }
 
    createRoom(newRoomName) {

@@ -8,7 +8,8 @@ class MessageList extends Component {
       username: '',
       messages: [],
       message: '',
-      roomId: ''
+      roomId: '',
+      filteredMessages: []
   }
 
     this.handleChange = this.handleChange.bind(this);
@@ -25,14 +26,13 @@ class MessageList extends Component {
      e.preventDefault();
      if (this.props.firebase)
      {
-
+       this.setState({message: ''});
        this.messagesRef.push({
        username: this.state.username,
        content: this.state.message,
        sentAt: new Date().toISOString().slice(0,10),
        roomId: this.props.activeRoom.key,
        })
-       this.setState({message: ''});
      }
    }
 
@@ -55,7 +55,7 @@ class MessageList extends Component {
       <div className = 'messages'>
       <h1>{this.props.activeRoom.name}</h1>
       <input type="text" value={this.state.message} onChange={this.handleChange.bind(this)} />
-      <form onSubmit={ (e) => this.handleSubmit.bind(this) }>
+      <form onSubmit={ this.handleSubmit.bind(this) }>
       <button type="submit">Submit</button>
       <label>
         Messages:
