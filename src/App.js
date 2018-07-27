@@ -56,7 +56,7 @@ constructor(props) {
         </header>
 
         <RoomList firebase={firebase} activeRoom={this.state.activeRoom} setRoom={this.setRoom} />
-        <MessageList activeRoom={this.state.activeRoom} firebase={firebase} />
+         <MessageList firebase={firebase} activeRoom={this.state.activeRoom} user={this.state.user} setUser={this.setUser} />
         <User firebase={firebase} activeRoom={this.state.activeRoom} setUser={this.setUser} user={this.state.user} />
       </div>
     );
