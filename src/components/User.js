@@ -22,13 +22,14 @@ class User extends Component {
    console.log("Show error if this is wrong" , error.code)
    console.log("Show error message", error.message)
    console.log("Show error email", error.email)
-   console.log("Show error crediential", error.crediential)
+   console.log("Show error credential", error.credential)
 });
 
 }
 
-logOut(){
-  this.props.firebase.auth().signOut();
+logOut(e){
+  e.preventDefault();
+  this.props.firebase.auth().signOut()
 }
 
 componentDidMount() {
@@ -41,7 +42,7 @@ render() {
   return (
     <div>
     <span>{this.props.user ? this.props.user.displayName : "Guest"}</span>
-    <form onSubmit ={this.login.bind(this )}>
+    <form onSubmit ={ this.login.bind(this) }>
    <button type="submit">Sign-In</button>
    </form>
    <form onSubmit={ this.logOut.bind(this) }>
